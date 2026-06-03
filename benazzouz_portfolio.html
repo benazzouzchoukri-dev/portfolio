@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benazzouz Choukri — Architectural Designer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0c;
+      --surface: #141413;
+      --border: rgba(255,255,255,0.08);
+      --text-primary: #f0ede8;
+      --text-secondary: #9a9690;
+      --text-accent: #c8b99a;
+      --accent: #b89d7a;
+      --accent-light: #d4bfa0;
+      --serif: 'Cormorant Garamond', serif;
+      --sans: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 4rem;
+      background: rgba(13,13,12,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--text-accent);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent-light); }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-line {
+      position: absolute;
+      top: 0; right: 18%;
+      width: 0.5px;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--border) 30%, var(--border) 70%, transparent);
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      max-width: 14ch;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent-light);
+    }
+    .hero-bio {
+      margin-top: 2.5rem;
+      max-width: 42ch;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+    .hero-cta {
+      display: inline-block;
+      margin-top: 3rem;
+      padding: 0.9rem 2.5rem;
+      border: 0.5px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .hero-cta:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .scroll-line {
+      width: 3rem;
+      height: 0.5px;
+      background: var(--text-secondary);
+    }
+
+    /* ─── SECTION SHARED ─── */
+    section {
+      padding: 7rem 4rem;
+    }
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--text-primary);
+      margin-bottom: 3rem;
+    }
+    .divider {
+      width: 3rem;
+      height: 0.5px;
+      background: var(--accent);
+      margin-bottom: 2rem;
+    }
+
+    /* ─── PORTFOLIO ─── */
+    #portfolio { background: var(--surface); }
+    .portfolio-intro {
+      max-width: 52ch;
+      color: var(--text-secondary);
+      margin-bottom: 4rem;
+      font-size: 0.95rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+      cursor: pointer;
+    }
+    .gallery-item:nth-child(1) { grid-column: span 7; aspect-ratio: 16/10; }
+    .gallery-item:nth-child(2) { grid-column: span 5; aspect-ratio: 4/5; }
+    .gallery-item:nth-child(3) { grid-column: span 4; aspect-ratio: 1/1; }
+    .gallery-item:nth-child(4) { grid-column: span 5; aspect-ratio: 16/11; }
+    .gallery-item:nth-child(5) { grid-column: span 3; aspect-ratio: 1/1; }
+
+    .gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border: 0.5px dashed var(--border);
+      color: var(--text-secondary);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: border-color 0.3s;
+      min-height: 220px;
+    }
+    .gallery-item:hover .gallery-placeholder { border-color: var(--accent); }
+
+    .gallery-plus {
+      width: 2rem; height: 2rem;
+      border: 0.5px solid var(--text-secondary);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+    }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(13,13,12,0.6);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-caption {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+    }
+    .gallery-note {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+    .gallery-note a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ─── ABOUT ─── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .about-text p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+    .about-text p:first-of-type {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .stat-card {
+      background: var(--surface);
+      padding: 2rem 1.75rem;
+      border: 0.5px solid var(--border);
+    }
+    .stat-number {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* ─── CONTACT ─── */
+    #contact { background: var(--surface); text-align: center; }
+    .contact-inner { max-width: 600px; margin: 0 auto; }
+    .contact-inner .section-title { margin-bottom: 1rem; }
+    .contact-inner .section-label { margin-bottom: 1.5rem; }
+    .contact-tagline {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 3.5rem;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 2rem;
+      border: 0.5px solid var(--border);
+      color: var(--text-secondary);
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .contact-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .contact-btn.primary {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .contact-btn.primary:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 0.5px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 2rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero, section { padding: 5rem 2rem; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:nth-child(n) { grid-column: span 1; aspect-ratio: 4/3; }
+      #about { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+      footer { padding: 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      section { padding: 4rem 1.5rem; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">B · Choukri</a>
+    <ul class="nav-links">
+      <li><a href="#portfolio">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-line"></div>
+    <p class="hero-eyebrow">Architectural Designer &amp; 3D Renderer</p>
+    <h1 class="hero-name">Benazzouz<br /><em>Choukri</em></h1>
+    <p class="hero-bio">
+      Passionate about translating spatial ideas into compelling 3D environments.
+      Through house design and architectural rendering, I explore the intersection
+      of structure, light, and livability — turning concepts into immersive visual experiences.
+    </p>
+    <a href="#portfolio" class="hero-cta">View My Work</a>
+    <div class="hero-scroll">
+      <span class="scroll-line"></span>
+      Scroll
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <p class="section-label">Selected Work</p>
+    <h2 class="section-title">3D Designs &amp;<br />Architectural Renders</h2>
+    <p class="portfolio-intro">
+      A curated selection of residential 3D design projects and photorealistic renders —
+      each one exploring form, light, and the art of spatial storytelling.
+    </p>
+
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <!-- Replace this div with your <img src="..." /> -->
+        <div class="gallery-placeholder">
+          <div class="gallery-plus">+</div>
+          Add your render here
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-caption">Project 01 — Exterior Render</span>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-plus">+</div>
+          Add your render here
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-caption">Project 02 — Interior Design</span>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-plus">+</div>
+          Add render
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-caption">Project 03</span>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-plus">+</div>
+          Add render
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-caption">Project 04</span>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <div class="gallery-plus">+</div>
+          Add render
+        </div>
+        <div class="gallery-overlay">
+          <span class="gallery-caption">Project 05</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="gallery-note">
+      ↑ Replace the placeholder boxes with your own images.
+      In Carrd, use the <strong>Image</strong> element or embed this code block and swap the &lt;div&gt; placeholders for &lt;img&gt; tags.
+    </p>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-text">
+      <p class="section-label">About</p>
+      <h2 class="section-title">Design is the<br />art of <em>seeing</em><br />before building</h2>
+      <div class="divider"></div>
+      <p>
+        I am an architectural designer specializing in 3D residential design and photorealistic rendering.
+        My work sits at the crossroads of technical precision and creative vision — where geometry
+        meets atmosphere.
+      </p>
+      <p>
+        Every project begins with understanding how people want to <em>feel</em> in a space.
+        From there, I build it in three dimensions — crafting light, material, and form
+        until the design breathes on its own.
+      </p>
+      <p>
+        Based in Algeria, working globally.
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-number">3D</div>
+        <div class="stat-label">House Design</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">HD</div>
+        <div class="stat-label">Renders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Concepts</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">01</div>
+        <div class="stat-label">Vision</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <p class="section-label">Get In Touch</p>
+      <h2 class="section-title">Let's build<br />something <em>together</em></h2>
+      <p class="contact-tagline">
+        Open to collaborations, freelance projects, and design conversations.
+      </p>
+      <div class="contact-links">
+        <a href="mailto:your@email.com" class="contact-btn primary">
+          ✉ Email Me
+        </a>
+        <a href="https://instagram.com/yourhandle" target="_blank" class="contact-btn">
+          ◎ Instagram
+        </a>
+        <a href="https://behance.net/yourhandle" target="_blank" class="contact-btn">
+          ◈ Behance
+        </a>
+        <a href="https://linkedin.com/in/yourhandle" target="_blank" class="contact-btn">
+          ◇ LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Benazzouz Choukri — All rights reserved</p>
+    <p>Architectural Designer · Algeria</p>
+  </footer>
+
+</body>
+</html>
